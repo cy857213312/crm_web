@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../images/favicon.ico" type="image/ico" />
+
+    <title>极智客户关系管理系统 </title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../css/green.css" rel="stylesheet">
+
+    <!-- bootstrap-progressbar -->
+    <link href="../css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="../css/jqvmap.min.css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="../css/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+
+
+
+            <div id="header" class="include"></div>
+
+
+            <!-- page content -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box table-responsive">
+                                    <p class="text-muted font-13 m-b-30">
+                                        <button onclick="openDialog()" type="button" id="open" class="btn btn-success">新增预约</button>
+                                    </p>
+                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%;text-align: center;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:70px">ID</th>
+                                                <th style="width:200px">预约人姓名</th>
+                                                <th style="width:500px">预约事项</th>
+                                                <th style="width:200px">预约地点</th>
+                                                <th style="width:200px">预约时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody style="font-size: 15px;">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>System Architect</td>
+                                                <td>Edinburgh</td>
+                                                <td>61</td>
+                                                <td>小明</td>
+                                                <td><button type="button" class="btn btn-primary">查看</button>
+                                                    <button type="button" class="btn btn-warning">修改</button>
+                                                    <button type="button" class="btn btn-danger">删除</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>System Architect</td>
+                                                <td>Edinburgh</td>
+                                                <td>61</td>
+                                                <td>小明</td>
+                                                <td><button type="button" class="btn btn-primary">查看</button>
+                                                    <button type="button" class="btn btn-warning">修改</button>
+                                                    <button type="button" class="btn btn-danger">删除</button>
+                                                </td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /page content -->
+
+
+            </div>
+            <!-- /page content -->
+
+            <!--新增框弹出-->
+            <div id="light" class="white_content">
+                <h5 style="color:black;">新建预约</h5>
+                <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialog()" src="../images/chacha.jpg">
+                <hr />
+                <table class="move_table">
+                    <tr>
+                        <td>姓名</td>
+                        <td><input type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>内容</td>
+                        <td><textarea style="resize: none;width: 500px;height: 100px;"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>时间</td>
+                        <td><input type="date" /></td>
+                    </tr>
+                    <tr>
+                        <td>地点</td>
+                        <td><input type="text" /></td>
+                    </tr>
+
+
+                </table>
+                <div class="bottom_btn"> <button type="button" class="btn btn-success btn-sm">确定</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="closeDialog()">取消</button></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/move.js"></script>
+
+    <script>
+        $("#header").load("header.html");
+    </script>
+</body>
+
+</html>
