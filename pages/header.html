@@ -9,12 +9,12 @@
 
         <!-- menu profile quick info -->
         <div class="profile clearfix">
-            <div class="profile_pic">
-                <img src="../images/img.jpg" alt="..." class="img-circle profile_img">
+            <div id="leftHeadPhoto" class="profile_pic">
+
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>用户名</h2>
+                <h2 id="leftName"></h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -54,42 +54,25 @@
                             <li><a href="tables_dynamic.html">代理商</a></li>
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-cubes"></i> 产品管理 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="chartjs.html">Chart JS</a></li>
-                            <li><a href="chartjs2.html">Chart JS2</a></li>
-                            <li><a href="morisjs.html">Moris JS</a></li>
-                            <li><a href="echarts.html">ECharts</a></li>
-                            <li><a href="other_charts.html">Other Charts</a></li>
-                        </ul>
+                    <li><a href="product_manager.html"><i class="fa fa-cubes"></i> 产品管理 <span class="fa fa-chevron-down"></span></a>
                     </li>
                     <li><a><i class="fa fa-pencil-square-o"></i>订单管理 <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                            <li><a href="fixed_footer.html">Fixed Footer</a></li>
+                            <li><a href="no_paid_orders.html">未付款订单</a></li>
+                            <li><a href="paid_orders.html">已付款订单</a></li>
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-gift"></i>拜访客户 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                            <li><a href="fixed_footer.html">Fixed Footer</a></li>
-                        </ul>
+                    <li><a href="visit_clients.html"><i class="fa fa-gift"></i>拜访客户 <span class="fa fa-chevron-down"></span></a>
+
                     </li>
-                    <li><a><i class="fa fa-tags"></i>客户反馈 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                            <li><a href="fixed_footer.html">Fixed Footer</a></li>
-                        </ul>
+                    <li><a href="feedback.html"><i class="fa fa-tags"></i>客户反馈 <span class="fa fa-chevron-down"></span></a>
                     </li>
                 </ul>
             </div>
             <div class="menu_section">
                 <h3>管理员功能</h3>
                 <ul class="nav side-menu">
-                    <li><a><i class="fa fa-bug"></i>员工管理 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-
-                        </ul>
+                    <li><a href="employee_manager.html"><i class="fa fa-bug"></i>员工管理 <span class="fa fa-chevron-down"></span></a>
                     </li>
 
 
@@ -129,7 +112,8 @@
             <ul class=" navbar-right">
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                        <img src="../images/img.jpg" alt="">John Doe
+                        <img id="rightHeadPhoto" src="" />
+                        <h7 id="rightName"></h7>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="javascript:;"> Profile</a>
@@ -252,3 +236,14 @@
 
 <!-- Custom Theme Scripts -->
 <script src="../js/custom.min.js"></script>
+
+
+<script>
+    var storage = window.sessionStorage;
+    user = JSON.parse(storage["user"]);
+
+    $("#leftName").text(user.name)
+    $("#rightName").text(user.name)
+    $("#leftHeadPhoto").html(' <img  src="' + user.photo + '" alt="..." class="img-circle profile_img"> ')
+    document.getElementById("rightHeadPhoto").src = user.photo
+</script>
