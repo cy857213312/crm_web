@@ -401,7 +401,7 @@
             //查询所有普通客户
             var customerDto = {
                 "pageNum": 1,
-                "type": 0,
+                "type": 1,
                 "uid": user.id
             }
 
@@ -446,7 +446,7 @@
                                 $("#contentU").val(customer.content);
 
                             },
-                            //流失普通客户
+                            //流失VIP客户记录
                             deleteCustomer: function(customerId) {
                                 if (!confirm("确定要更改吗?")) {
                                     return false;
@@ -467,7 +467,7 @@
 
                                             if (data.code == "SUCCESS") {
                                                 alert("更改成功")
-                                                window.location.href = 'customer_common.html';
+                                                window.location.href = 'customer_VIP.html';
                                             } else {
                                                 alert(data.message)
                                             }
@@ -523,7 +523,7 @@
 
                     if (data.code == "SUCCESS") {
                         alert("新增成功")
-                        window.location.href = 'customer_common.html';
+                        window.location.href = 'customer_VIP.html';
                     } else {
                         alert(data.message)
                     }
@@ -565,7 +565,7 @@
 
                     if (data.code == "SUCCESS") {
                         alert("更新成功")
-                        window.location.href = 'customer_common.html';
+                        window.location.href = 'customer_VIP.html';
                     } else {
                         alert(data.message)
                     }

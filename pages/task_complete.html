@@ -53,38 +53,33 @@
                                         <thead>
                                             <tr>
                                                 <th style="width:70px">ID</th>
-                                                <th style="width:500px">任务标题</th>
-                                                <th style="width:300px">时间</th>
-                                                <th style="width:200px">执行人</th>
-                                                <th style="width:200px">创建人</th>
-                                                <th>操作</th>
+                                                <th style="width:300px">任务标题</th>
+                                                <th style="width:200px">开始时间</th>
+                                                <th style="width:200px">结束时间</th>
+                                                <th style="width:150px">执行人</th>
+                                                <th style="width:150px">创建人</th>
+                                                <th style="width:150px">优先级</th>
+                                                <th style="width:200px">操作</th>
                                             </tr>
                                         </thead>
 
 
-                                        <tbody style="font-size: 15px;">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>小明</td>
-                                                <td><button type="button" class="btn btn-primary">查看</button>
-                                                    <button type="button" class="btn btn-warning">修改</button>
-                                                    <button type="button" class="btn btn-danger">删除</button>
+                                        <tbody id="tby" style="font-size: 15px;">
+                                            <tr v-for="(i,index) in task">
+                                                <td>{{index+1}}</td>
+                                                <td>{{i.title}}</td>
+                                                <td>{{i.beginTime}}</td>
+                                                <td>{{i.endTime}}</td>
+                                                <td>{{i.executeName}}</td>
+                                                <td>{{i.createName}}</td>
+                                                <td v-if="i.priority==0 ">低</td>
+                                                <td v-else-if="i.priority==1 ">中</td>
+                                                <td v-else-if="i.priority==2 ">高</td>
+                                                <td><button type="button" v-on:click="openDialogLook(i)" class="btn btn-primary">查看</button>
+                                                    <button type="button" v-on:click="deleteTask(i.id)" class="btn btn-danger">删除</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>小明</td>
-                                                <td><button type="button" class="btn btn-primary">查看</button>
-                                                    <button type="button" class="btn btn-warning">修改</button>
-                                                    <button type="button" class="btn btn-danger">删除</button>
-                                                </td>
-                                            </tr>
+
 
 
                                         </tbody>
@@ -111,15 +106,140 @@
                 <div class="clearfix"></div>
             </footer>
             <!-- /footer content -->
+
+            <!--任务框弹出-->
+            <div id="light" class="white_content">
+                <h5 style="color:black;">查看任务</h5>
+                <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialog()" src="../images/chacha.jpg">
+                <hr />
+                <table class="move_table">
+                    <tr>
+                        <td>任务标题</td>
+                        <td><input id="title" type="text" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>任务内容</td>
+                        <td><textarea id="content" style="resize: none;width: 500px;height: 100px;" readonly></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>开始时间</td>
+                        <td><input id="beginTime" type="date" readonly /></td>
+                    </tr>
+                    <tr>
+                        <td>结束时间</td>
+                        <td><input id="endTime" type="date" readonly /></td>
+                    </tr>
+                    <tr>
+                        <td>优先级</td>
+                        <td><select id="priority" style="width: 50px;" disabled="disabled">
+                                <option value="0" selected>低</option>
+                                <option value="1">中</option>
+                                <option value="2">高</option>
+                            </select></td>
+                    </tr>
+                    <tr id="appoint">
+                        <td>创建人</td>
+                        <td><input id="appointPeople" type="text" readonly /></td>
+                    </tr>
+                </table>
+                <div class="bottom_btn">
+                    <button type="button" class="btn btn-success btn-sm" onclick="closeDialog()">确定</button></div>
+            </div>
         </div>
     </div>
 
     <!-- jQuery -->
     <script src="../js/jquery.min.js"></script>
-
+    <script src="../js/move.js"></script>
+    <script src="../js/constant.js"></script>
+    <script src="../js/vue.js"></script>
 
     <script>
         $("#header").load("header.html");
+    </script>
+
+
+    <script>
+        $(function() {
+            var storage = window.sessionStorage;
+            user = JSON.parse(storage["user"]);
+
+
+            //查询当前用户所有任务
+            var taskDto = {
+                "pageNum": 1,
+                "type": 1,
+                "uid": user.id
+            }
+
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/TaskController/searchAllTask", // 访问路径
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(taskDto),
+                success(data) { // 成功调用的回调函数
+                    new Vue({
+                        el: "#tby",
+                        data: {
+                            task: data.data.list
+                        },
+                        methods: {
+                            //打开任务框
+                            openDialogLook: function(task) {
+                                document.getElementById('light').style.display = 'block';
+                                $("#title").val(task.title);
+                                $("#content").val(task.content);
+                                $("#beginTime").val(task.beginTime);
+                                $("#endTime").val(task.endTime);
+                                $("#priority option[value='" + task.priority + "']").attr("selected", true);
+                                $("#appointPeople").val(task.createName);
+                            }, //删除选定任务
+                            deleteTask: function(taskId) {
+
+                                if (!confirm("确定要删除吗?")) {
+                                    return false;
+                                } else {
+
+                                    $.ajax({
+                                        type: "GET", // 提交方式
+                                        // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                                        dataType: "json",
+                                        contentType: "application/json;charset=utf-8",
+                                        url: LocalUrl + "/web/TaskController/deleteByPrimaryKey", // 访问路径
+                                        beforeSend: function(request) {
+                                            request.setRequestHeader(Token, user.token);
+                                        },
+                                        data: {
+                                            "id": taskId
+                                        },
+                                        success(data) { // 成功调用的回调函数
+                                            if (data.code == "SUCCESS") {
+                                                alert("删除成功")
+                                                window.location.href = 'task_wait.html';
+                                            } else {
+                                                alert(data.message)
+                                            }
+                                        },
+                                        error() { // 调用失败
+                                            alert("ajax出错，未能成功访问路径");
+                                        }
+                                    })
+                                }
+                            }
+                        }
+
+                    })
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
+        })
     </script>
 </body>
 

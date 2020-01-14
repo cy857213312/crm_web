@@ -65,29 +65,18 @@
                                         </thead>
 
 
-                                        <tbody style="font-size: 15px;">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>小明</td>
-                                                <td><button type="button" class="btn btn-primary">查看</button>
-                                                    <button type="button" class="btn btn-warning">修改</button>
-                                                    <button type="button" class="btn btn-danger">删除</button>
+                                        <tbody id="tby" style="font-size: 15px;">
+                                            <tr v-for="(i,index) in appointment">
+                                                <td>{{index+1}}</td>
+                                                <td>{{i.name}}</td>
+                                                <td>{{i.content}}</td>
+                                                <td>{{i.area}}</td>
+                                                <td>{{i.time}}</td>
+                                                <td><button type="button" v-on:click="openAppointmentLook(i)" class="btn btn-primary">查看</button>
+                                                    <button type="button" v-on:click="deleteAppointment(i.id)" class="btn btn-danger">删除</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>小明</td>
-                                                <td><button type="button" class="btn btn-primary">查看</button>
-                                                    <button type="button" class="btn btn-warning">修改</button>
-                                                    <button type="button" class="btn btn-danger">删除</button>
-                                                </td>
-                                            </tr>
+
 
 
                                         </tbody>
@@ -106,6 +95,37 @@
             </div>
             <!-- /page content -->
 
+            <!--查看框弹出-->
+            <div id="lightU" class="white_content">
+                <h5 style="color:black;">查看预约</h5>
+                <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialogU()" src="../images/chacha.jpg">
+                <hr />
+                <table class="move_table">
+
+                    <input id="appointmentId" type="hidden" value="">
+                    <tr>
+                        <td>姓名</td>
+                        <td><input type="text" id="nameU" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>内容</td>
+                        <td><textarea id="contentU" style="resize: none;width: 500px;height: 100px;" readonly></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>时间</td>
+                        <td><input id="timeU" type="date" readonly/></td>
+                    </tr>
+                    <tr>
+                        <td>地点</td>
+                        <td><input id="areaU" type="text" readonly/></td>
+                    </tr>
+
+
+                </table>
+                <div class="bottom_btn">
+                    <button type="button" class="btn btn-success btn-sm" onclick="closeDialogU()">确定</button></div>
+            </div>
+
         </div>
     </div>
 
@@ -113,9 +133,92 @@
     <!-- jQuery -->
     <script src="../js/jquery.min.js"></script>
     <script src="../js/move.js"></script>
+    <script src="../js/constant.js"></script>
+    <script src="../js/vue.js"></script>
 
     <script>
         $("#header").load("header.html");
+    </script>
+
+
+    <script>
+        var storage = window.sessionStorage;
+        user = JSON.parse(storage["user"]);
+        $(function() {
+
+            var appointmentDto = {
+                "pageNum": 1,
+                "uid": user.id
+            }
+
+
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/AppointmentController/searchCompletedAppointment", // 访问路径
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(appointmentDto),
+                success(data) { // 成功调用的回调函数
+                    new Vue({
+                        el: "#tby",
+                        data: {
+                            appointment: data.data.list
+                        },
+                        methods: {
+                            //查看单独预约信息
+                            openAppointmentLook: function(appointment) {
+                                document.getElementById('lightU').style.display = 'block';
+                                $("#nameU").val(appointment.name)
+                                $("#contentU").val(appointment.content)
+                                $("#timeU").val(appointment.time)
+                                $("#areaU").val(appointment.area)
+                            },
+                            deleteAppointment: function(appointmentId) {
+
+                                if (!confirm("确定要删除吗?")) {
+                                    return false;
+                                } else {
+
+                                    $.ajax({
+                                        type: "GET", // 提交方式
+                                        // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                                        dataType: "json",
+                                        contentType: "application/json;charset=utf-8",
+                                        url: LocalUrl + "/web/AppointmentController/deleteByPrimaryKey", // 访问路径
+                                        beforeSend: function(request) {
+                                            request.setRequestHeader(Token, user.token);
+                                        },
+                                        data: {
+                                            "id": appointmentId
+                                        },
+                                        success(data) { // 成功调用的回调函数
+                                            if (data.code == "SUCCESS") {
+                                                alert("删除成功")
+                                                window.location.href = 'appointment_wait.html';
+                                            } else {
+                                                alert(data.message)
+                                            }
+                                        },
+                                        error() { // 调用失败
+                                            alert("ajax出错，未能成功访问路径");
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    })
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+
+
+            })
+        })
     </script>
 </body>
 

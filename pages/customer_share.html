@@ -80,7 +80,7 @@
                                                 <th>{{i.createTime}}</th>
                                                 <td>
                                                     <button type="button" class="btn btn-warning" v-on:click="updateCustomer(i)">修改</button>
-                                                    <button type="button" class="btn btn-primary" v-on:click="deleteCustomer(i.id)">流失</button>
+                                                    <button type="button" class="btn btn-danger" v-on:click="deleteCustomer(i.id)">删除</button>
                                                 </td>
                                             </tr>
 
@@ -398,11 +398,10 @@
             //------省市区-------
 
 
-            //查询所有普通客户
+            //查询所有共享客户
             var customerDto = {
                 "pageNum": 1,
-                "type": 0,
-                "uid": user.id
+                "cid": user.cid
             }
 
             $.ajax({
@@ -410,7 +409,7 @@
                 // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
-                url: LocalUrl + "/web/CustomerController/searchCustomer", // 查询所有任务
+                url: LocalUrl + "/web/CustomerController/searchShareCustomer", // 查询所有任务
                 beforeSend: function(request) {
                     request.setRequestHeader(Token, user.token);
                 },
@@ -429,14 +428,6 @@
                                 $("#customerId").val(customer.id);
                                 $("#nameU").val(customer.name);
                                 $("#sexU").val(customer.sex);
-
-                                var city = customer.city;
-                                province = city.match(/(\S*),/)[1];
-                                town = city.match(/,(\S*)/)[1];
-                                $("#input_provinceU option[value='" + province + "']").attr("selected", true);
-                                changeTown(); //赋值给市的列表
-                                $("#input_cityU option[value='" + town + "']").attr("selected", true);
-
                                 $("#addressU").val(customer.address);
                                 $("#phoneU").val(customer.phone);
                                 $("#emailU").val(customer.email);
@@ -444,11 +435,16 @@
                                 $("#typeU option[value='" + customer.type + "']").attr("selected", true);
                                 $("#birthU").val(customer.birth);
                                 $("#contentU").val(customer.content);
-
+                                var city = customer.city;
+                                province = city.match(/(\S*),/)[1];
+                                town = city.match(/,(\S*)/)[1];
+                                $("#input_provinceU option[value='" + province + "']").attr("selected", true);
+                                changeTown(); //赋值给市的列表
+                                $("#input_cityU option[value='" + town + "']").attr("selected", true);
                             },
-                            //流失普通客户
+                            //删除共享客户记录
                             deleteCustomer: function(customerId) {
-                                if (!confirm("确定要更改吗?")) {
+                                if (!confirm("确定要删除吗?")) {
                                     return false;
                                 } else {
                                     $.ajax({
@@ -456,7 +452,7 @@
                                         // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
                                         dataType: "json",
                                         contentType: "application/json;charset=utf-8",
-                                        url: LocalUrl + "/web/CustomerController/deleteByPrimaryKey", // 查询所有任务
+                                        url: LocalUrl + "/web/CustomerController/deleteCustomer", // 查询所有任务
                                         beforeSend: function(request) {
                                             request.setRequestHeader(Token, user.token);
                                         },
@@ -466,8 +462,8 @@
                                         success(data) { // 成功调用的回调函数
 
                                             if (data.code == "SUCCESS") {
-                                                alert("更改成功")
-                                                window.location.href = 'customer_common.html';
+                                                alert("删除成功")
+                                                window.location.href = 'customer_share.html';
                                             } else {
                                                 alert(data.message)
                                             }
@@ -523,7 +519,7 @@
 
                     if (data.code == "SUCCESS") {
                         alert("新增成功")
-                        window.location.href = 'customer_common.html';
+                        window.location.href = 'customer_share.html';
                     } else {
                         alert(data.message)
                     }
@@ -565,7 +561,7 @@
 
                     if (data.code == "SUCCESS") {
                         alert("更新成功")
-                        window.location.href = 'customer_common.html';
+                        window.location.href = 'customer_share.html';
                     } else {
                         alert(data.message)
                     }
