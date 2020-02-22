@@ -51,44 +51,37 @@
                             <div class="col-sm-12">
                                 <div class="card-box table-responsive">
                                     <p class="text-muted font-13 m-b-30">
-                                        <button onclick="openDialog()" type="button" id="open" class="btn btn-success">新增客户</button>
+                                        <button onclick="openDialog()" type="button" id="open" class="btn btn-success">新增产品</button>
                                     </p>
                                     <table id="datatable" class="table table-striped table-bordered" style="width:100%;text-align: center;">
                                         <thead>
                                             <tr>
-                                                <th style="width:70px">ID</th>
-                                                <th style="width:500px">任务标题</th>
-                                                <th style="width:300px">时间</th>
-                                                <th style="width:200px">执行人</th>
-                                                <th style="width:200px">创建人</th>
-                                                <th>操作</th>
+                                                <th style="width:70px">序号</th>
+                                                <th style="width:200px">产品名称</th>
+                                                <th style="width:100px">单价</th>
+                                                <th style="width:100px">上市时间</th>
+                                                <th style="width:100px">创建人</th>
+                                                <th style="width:100px">状态</th>
+                                                <th style="width:200px">操作</th>
                                             </tr>
                                         </thead>
 
 
-                                        <tbody style="font-size: 15px;">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>小明</td>
-                                                <td><button type="button" class="btn btn-primary">查看</button>
-                                                    <button type="button" class="btn btn-warning">修改</button>
-                                                    <button type="button" class="btn btn-danger">删除</button>
+                                        <tbody id="tby" style="font-size: 15px;" v-cloak>
+                                            <tr v-for="(i,index) in product">
+                                                <td>{{index+1}}</td>
+                                                <td>{{i.name}}</td>
+                                                <td>￥{{i.price}}</td>
+                                                <td>{{i.marketTime}}</td>
+                                                <td>{{i.createName}}</td>
+                                                <td v-if="i.statue==0">上架中</td>
+                                                <td v-if="i.statue==1">下架中</td>
+                                                <td>
+                                                    <button v-on:click="openUpdateProduct(i)" type="button" class="btn btn-warning">修改</button>
+                                                    <button v-on:click="deleteProduct(i.id)" type="button" class="btn btn-danger">删除</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>小明</td>
-                                                <td><button type="button" class="btn btn-primary">查看</button>
-                                                    <button type="button" class="btn btn-warning">修改</button>
-                                                    <button type="button" class="btn btn-danger">删除</button>
-                                                </td>
-                                            </tr>
+
 
 
                                         </tbody>
@@ -109,7 +102,7 @@
             <!--新增框弹出-->
             <div id="light" class="white_content">
                 <div class="light_head">
-                    <h5 style="color:black;">添加新客户</h5>
+                    <h5 style="color:black;">添加新产品</h5>
                     <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialog()" src="../images/chacha.jpg">
                     <hr />
                 </div>
@@ -117,72 +110,107 @@
                     <form>
                         <table class="move_table">
                             <tr>
-                                <td>姓名</td>
-                                <td><input style="width: 220px;" class="form-control" type="text"></td>
+                                <td>名称</td>
+                                <td><input id="name" style="width: 220px;" class="form-control" type="text"></td>
                             </tr>
                             <tr>
-                                <td>性别</td>
-                                <td><select style="width: 80px;" class="form-control">
-                                <option value="0" selected>女</option>
-                                <option value="1">男</option>
-                            </select>
-
-                                </td>
+                                <td>单价</td>
+                                <td><input id="price" style="width: 220px;" class="form-control" type="text"></td>
                             </tr>
                             <tr>
-                                <td>地区</td>
-                                <td style="width:250px"> <select style="width: 220px;" name="input_province" id="input_province" class="form-control">
-                                <option value="">--请选择--</option>
-                            </select>
-                                    <select style="width: 220px;" name="input_city" id="input_city" class="form-control">
-                                    <option value="">--请选择--</option>
-                                </select>
-                                </td>
-                                <td>
-
-                                </td>
+                                <td>成本</td>
+                                <td><input id="cost" style="width: 220px;" class="form-control" type="text"></td>
                             </tr>
 
                             <tr>
-                                <td>详细地址</td>
-                                <td><input style="width: 220px;" class="form-control" type="text" /></td>
+                                <td>数量</td>
+                                <td><input id="num" style="width: 220px;" class="form-control" type="text" /></td>
                             </tr>
                             <tr>
-                                <td>手机号</td>
-                                <td><input style="width: 220px;" class="form-control" type="tel" /></td>
+                                <td>上市时间</td>
+                                <td><input id="marketTime" style="width: 220px;" class="form-control" type="date" /></td>
                             </tr>
                             <tr>
-                                <td>邮箱</td>
-                                <td><input style="width: 220px;" class="form-control" type="email" /></td>
-                            </tr>
-                            <tr>
-                                <td>行业</td>
-                                <td><input style="width: 220px;" class="form-control" type="text" /></td>
-                            </tr>
-                            <tr>
-                                <td>类别</td>
-                                <td> <select style="width: 220px;" class="form-control">
-                                        <option value="0" selected>普通客户</option>
-                                        <option value="1">VIP用户</option>
-                                        <option value="2">共享用户</option>
-                                        <option value="3">已流失用户</option>
+                                <td>状态</td>
+                                <td> <select id="statue" style="width: 220px;" class="form-control">
+                                        <option value="0" >上架中</option>
+                                        <option value="1">下架中</option>
                                     </select></td>
                             </tr>
                             <tr>
-                                <td>生日日期</td>
-                                <td><input style="width: 220px;" class="form-control" type="date" /></td>
+                                <td>图片</td>
+                                <td><input id="file" style="width: 220px;" class="form-control" type="file" /> </td>
                             </tr>
 
                             <tr>
-                                <td>客户介绍</td>
-                                <td style="width: 500px;"><textarea class="form-control" style="resize: none;width: 500px;height: 100px;"></textarea></td>
+                                <td>产品介绍</td>
+                                <td style="width: 500px;"><textarea id="produce" class="form-control" style="resize: none;width: 500px;height: 100px;"></textarea></td>
                             </tr>
 
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td><input type="submit" class="btn btn-success btn-sm"></button>
+                                <td><button type="button" class="btn btn-success btn-sm" onclick="increaseProduct()">提交</button>
                                     <button type="button" class="btn btn-success btn-sm" onclick="closeDialog()">取消</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="bottom_btn">
+                </div>
+            </div>
+
+            <!--更新框弹出-->
+            <div id="lightU" class="white_content">
+                <div class="light_head">
+                    <h5 style="color:black;">查看产品详情</h5>
+                    <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialogU()" src="../images/chacha.jpg">
+                    <hr />
+                </div>
+                <div class="light_center">
+                    <form>
+                        <table class="move_table">
+                            <input id="productId" style="width: 220px;" class="form-control" type="hidden">
+                            <tr>
+                                <td>名称</td>
+                                <td><input id="nameU" style="width: 220px;" class="form-control" type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>单价</td>
+                                <td><input id="priceU" style="width: 220px;" class="form-control" type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>成本</td>
+                                <td><input id="costU" style="width: 220px;" class="form-control" type="text"></td>
+                            </tr>
+
+                            <tr>
+                                <td>数量</td>
+                                <td><input id="numU" style="width: 220px;" class="form-control" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td>上市时间</td>
+                                <td><input id="marketTimeU" style="width: 220px;" class="form-control" type="date" /></td>
+                            </tr>
+                            <tr>
+                                <td>状态</td>
+                                <td> <select id="statueU" style="width: 220px;" class="form-control">
+                                        <option value="0" >上架中</option>
+                                        <option value="1">下架中</option>
+                                    </select></td>
+                            </tr>
+
+
+                            <tr>
+                                <td>产品介绍</td>
+                                <td style="width: 500px;"><textarea id="produceU" class="form-control" style="resize: none;width: 500px;height: 100px;"></textarea></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><button type="button" class="btn btn-success btn-sm" onclick="updateProductManager()">更新</button>
+                                    <button type="button" class="btn btn-success btn-sm" onclick="closeDialogU()">取消</button></td>
                             </tr>
                         </table>
                     </form>
@@ -200,8 +228,9 @@
 
 
     <script src="../js/move.js"></script>
-
     <script src="../js/cityAndPro.js"></script>
+    <script src="../js/constant.js"></script>
+    <script src="../js/vue.js"></script>
 
     <script>
         $("#header").load("header.html");
@@ -212,57 +241,197 @@
 
 
     <script>
+        //获取当前用户信息
+        var storage = window.sessionStorage;
+        user = JSON.parse(storage["user"]);
         $(function() {
-            var html = "";
-            var province_idx;
-            $("#input_city").append(html);
 
-            $.each(cityMessage, function(idx, item) {
-                if (item.parid == '1') {
-                    html += "<option value='" + item.regname + "' exid='" + item.regid + "'>" + item.regname + "</option>";
-                }
+            var productManagerSearchDto = {
+                "cid": user.cid,
+                "pageNum": 1
+            }
 
-            });
-            $("#input_province").append(html);
-            $("#input_province").change(function(e) {
-                var province = $(this).val();
-                var cityList = [];
-                if (province == "") return;
-                $("#input_city option").remove();
-                var html = "<option value=''>--请选择--</option>";
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/ProductManagerController/searchProductManager",
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(productManagerSearchDto),
+                success(data) { // 成功调用的回调函数
 
-                //					获取已选择的省份的数组下标
-                $.each(cityMessage, function(idx, item) {
-                    if (province == item.regname && item.parid == '1') {
-                        province_idx = idx
-                    }
-                })
+                    new Vue({
+                        el: "#tby",
+                        data: {
+                            product: data.data.list
+                        },
+                        methods: {
+                            //删除产品
+                            deleteProduct: function(productId) {
+                                if (user.type == 3) {
+                                    alert("权限不足，无法删除")
+                                    return false;
+                                }
 
-                //					获取已选择的省份的城市列表
-                $.each(cityMessage, function(idx, item) {
-                    if (cityMessage[idx].parid == cityMessage[province_idx].regid) {
-                        cityList.push(cityMessage[idx])
-                    }
-                })
+                                if (!confirm("确定要删除吗?")) {
+                                    return false;
+                                } else {
+                                    $.ajax({
+                                        type: "GET", // 提交方式
+                                        // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                                        dataType: "json",
+                                        contentType: "application/json;charset=utf-8",
+                                        url: LocalUrl + "/web/ProductManagerController/deleteProduct",
+                                        beforeSend: function(request) {
+                                            request.setRequestHeader(Token, user.token);
+                                        },
+                                        data: {
+                                            "id": productId
+                                        },
+                                        success(data) { // 成功调用的回调函数
 
-                //					添加城市信息给标签
-                if (cityList instanceof Array && cityList.length > 0) {
-                    $.each(cityList, function(idx, item) {
-                        console.log(item)
-                        html += "<option value='" + item.regname + "' exid='" + item.regid + "'>" + item.regname + "</option>";
+                                            if (data.code == "SUCCESS") {
+                                                alert("删除成功")
+                                                window.location.href = 'product_manager.html';
+                                            } else {
+                                                alert(data.message)
+                                            }
 
+                                        },
+                                        error() { // 调用失败
+                                            alert("ajax出错，未能成功访问路径");
+                                        }
+                                    })
+                                }
+
+                            },
+                            //更新产品
+                            openUpdateProduct: function(product) {
+
+                                document.getElementById('lightU').style.display = 'block';
+
+                                $("#productId").val(product.id);
+                                $("#nameU").val(product.name);
+                                $("#priceU").val(product.price);
+                                $("#costU").val(product.cost);
+                                $("#numU").val(product.num);
+                                $("#marketTimeU").val(product.marketTime);
+                                $("#produceU").val(product.produce);
+                                $("#statueU option[value='" + product.statue + "']").attr("selected", true);
+
+                            }
+
+
+                        }
                     });
-                } else {
-                    html += "<option value='" + cityMessage[province_idx].regname + "' exid='" + cityMessage[province_idx].regid + "'>" + cityMessage[province_idx].regname + "</option>";
 
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
                 }
-                $("#input_city").append(html);
-            });
+            })
+
         });
     </script>
 
 
+    <script>
+        //新增产品
+        function increaseProduct() {
 
+
+            if (user.type == 3) {
+                alert("权限不足，无法新增")
+                return false;
+            }
+
+            var productManager = {
+                "cid": user.cid,
+                "cost": $("#cost").val(),
+                "createUid": user.id,
+                "marketTime": $("#marketTime").val(),
+                "name": $("#name").val(),
+                "num": $("#num").val(),
+                "price": $("#price").val(),
+                "produce": $("#produce").val(),
+                "statue": $("#statue").val()
+            }
+
+
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/ProductManagerController/insertSelectiveProduct",
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(productManager),
+                success(data) { // 成功调用的回调函数
+
+                    if (data.code == "SUCCESS") {
+                        alert("添加成功")
+                        window.location.href = 'product_manager.html';
+                    } else {
+                        alert(data.message)
+                    }
+
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
+        }
+
+
+        //更新产品
+        function updateProductManager() {
+
+
+            var productManager = {
+
+                "id": $("#productId").val(),
+                "price": $("#priceU").val(),
+                "cost": $("#costU").val(),
+                "num": $("#numU").val(),
+                "name": $("#nameU").val(),
+                "marketTime": $("#marketTimeU").val(),
+                "statue": $("#statueU").val(),
+                "produce": $("#produceU").val()
+
+            }
+
+
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/ProductManagerController/updateSelectiveProduct",
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(productManager),
+                success(data) { // 成功调用的回调函数
+
+                    if (data.code == "SUCCESS") {
+                        alert("更新成功")
+                        window.location.href = 'product_manager.html';
+                    } else {
+                        alert(data.message)
+                    }
+
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
+        }
+    </script>
 
 </body>
 

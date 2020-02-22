@@ -28,3 +28,7 @@
     bottom: 30px;
     right: 30px;
 }
+
+[v-cloak] {
+    display: none;
+}
