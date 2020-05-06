@@ -56,42 +56,31 @@
                                         <thead>
                                             <tr>
                                                 <th style="width:70px">ID</th>
-                                                <th style="width:200px">客户姓名</th>
-                                                <th style="width:200px">出生日期</th>
+                                                <th style="width:200px">姓名</th>
+                                                <th style="width:100px">性别</th>
                                                 <th style="width:200px">电话</th>
-                                                <th style="width:200px">邮箱</th>
-                                                <th style="width:200px">地址</th>
-                                                <th style="width:200px">类型</th>
+                                                <th style="width:200px">邮件</th>
+                                                <th style="width:200px">城市</th>
+                                                <th style="width:200px">生日</th>
                                                 <th style="width:200px">操作</th>
                                             </tr>
                                         </thead>
 
 
-                                        <tbody style="font-size: 15px;">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>香茗</td>
-                                                <td>1996/02/29</td>
-                                                <td>61</td>
-                                                <td>89564782@qq.com</td>
-                                                <td>地址</td>
-                                                <td>普通客户</td>
-                                                <td><button type="button" class="btn btn-primary">查看客户详细信息</button>
+                                        <tbody id="tby" style="font-size: 15px;" v-cloak>
+                                            <tr v-for="(i,index) in customer">
+                                                <td>{{index+1}}</td>
+                                                <td>{{i.name}}</td>
+                                                <td v-if="i.sex==0">女</td>
+                                                <td v-else-if="i.sex==1">男</td>
+                                                <td>{{i.phone}}</td>
+                                                <td>{{i.email}}</td>
+                                                <th>{{i.city}}</th>
+                                                <th>{{i.birth}}</th>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" v-on:click="updateCustomer(i)">查看用户详细信息</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>校长</td>
-                                                <td>1986/06/30</td>
-                                                <td>61</td>
-                                                <td>15698457853@163.com</td>
-                                                <td>地址</td>
-                                                <td>VIP客户</td>
-                                                <td><button type="button" class="btn btn-primary">查看客户详细信息</button>
-                                                   
-                                                </td>
-                                            </tr>
-
 
                                         </tbody>
                                     </table>
@@ -108,91 +97,94 @@
 
             </div>
 
-            <!--新增框弹出-->
-            <div id="light" class="white_content">
+       
+
+            <!--更新框弹出-->
+            <div id="lightU" class="white_content">
                 <div class="light_head">
-                    <h5 style="color:black;">添加新客户</h5>
-                    <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialog()" src="../images/chacha.jpg">
+                    <h5 style="color:black;">客户信息</h5>
+                    <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialogU()" src="../images/chacha.jpg">
                     <hr />
                 </div>
                 <div class="light_center">
-                    <form>
-                        <table class="move_table">
-                            <tr>
-                                <td>姓名</td>
-                                <td><input style="width: 220px;" class="form-control" type="text"></td>
-                            </tr>
-                            <tr>
-                                <td>性别</td>
-                                <td><select style="width: 80px;" class="form-control">
+
+                    <table class="move_table">
+                        <input id="customerId" type="hidden">
+                        <tr>
+                            <td>姓名</td>
+                            <td><input id="nameU" style="width: 220px;" class="form-control" type="text" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>性别</td>
+                            <td><select id="sexU" style="width: 80px;" class="form-control"  disabled="true">
                                 <option value="0" selected>女</option>
                                 <option value="1">男</option>
                             </select>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>地区</td>
-                                <td style="width:250px"> <select style="width: 220px;" name="input_province" id="input_province" class="form-control">
-                                <option value="">--请选择--</option>
-                            </select>
-                                    <select style="width: 220px;" name="input_city" id="input_city" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>地区</td>
+                            <td style="width:250px"> 
+                                <select style="width: 220px;" name="input_province" id="input_provinceU" class="form-control"  disabled="true">
+                                  <option value="">--请选择--</option>
+                                </select>
+                                <select style="width: 220px;" name="input_city" id="input_cityU" class="form-control"  disabled="true">
                                     <option value="">--请选择--</option>
                                 </select>
-                                </td>
-                                <td>
+                            </td>
+                            <td>
 
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td>详细地址</td>
-                                <td><input style="width: 220px;" class="form-control" type="text" /></td>
-                            </tr>
-                            <tr>
-                                <td>手机号</td>
-                                <td><input style="width: 220px;" class="form-control" type="tel" /></td>
-                            </tr>
-                            <tr>
-                                <td>邮箱</td>
-                                <td><input style="width: 220px;" class="form-control" type="email" /></td>
-                            </tr>
-                            <tr>
-                                <td>行业</td>
-                                <td><input style="width: 220px;" class="form-control" type="text" /></td>
-                            </tr>
-                            <tr>
-                                <td>类别</td>
-                                <td> <select style="width: 220px;" class="form-control">
+                        <tr>
+                            <td>详细地址</td>
+                            <td><input id="addressU" style="width: 220px;" class="form-control" type="text" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td>手机号</td>
+                            <td><input id="phoneU" style="width: 220px;" class="form-control" type="tel" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td>邮箱</td>
+                            <td><input id="emailU" style="width: 220px;" class="form-control" type="email" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td>行业</td>
+                            <td><input id="industryU" style="width: 220px;" class="form-control" type="text" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td>类别</td>
+                            <td> <select id="typeU" style="width: 220px;" class="form-control"  disabled="true">
                                         <option value="0" selected>普通客户</option>
                                         <option value="1">VIP用户</option>
                                         <option value="2">共享用户</option>
                                         <option value="3">已流失用户</option>
                                     </select></td>
-                            </tr>
-                            <tr>
-                                <td>生日日期</td>
-                                <td><input style="width: 220px;" class="form-control" type="date" /></td>
-                            </tr>
+                        </tr>
+                        <tr>
+                            <td>生日日期</td>
+                            <td><input id="birthU" style="width: 220px;" class="form-control" type="date" readonly/></td>
+                        </tr>
 
-                            <tr>
-                                <td>客户介绍</td>
-                                <td style="width: 500px;"><textarea class="form-control" style="resize: none;width: 500px;height: 100px;"></textarea></td>
-                            </tr>
+                        <tr>
+                            <td>客户介绍</td>
+                            <td style="width: 500px;"><textarea id="contentU" class="form-control" style="resize: none;width: 500px;height: 100px;" readonly></textarea></td>
+                        </tr>
 
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td><input type="submit" class="btn btn-success btn-sm"></button>
-                                    <button type="button" class="btn btn-success btn-sm" onclick="closeDialog()">取消</button></td>
-                            </tr>
-                        </table>
-                    </form>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" style="width: 100px;" class="btn btn-success btn-sm" onclick="closeDialogU()">退出</button></td>
+                        </tr>
+                    </table>
+
                 </div>
                 <div class="bottom_btn">
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -205,6 +197,10 @@
 
     <script src="../js/cityAndPro.js"></script>
 
+    <script src="../js/move.js"></script>
+    <script src="../js/constant.js"></script>
+    <script src="../js/vue.js"></script>
+
     <script>
         $("#header").load("header.html");
     </script>
@@ -214,7 +210,13 @@
 
 
     <script>
+        //判断是否有资格进行指派
+        var storage = window.sessionStorage;
+        user = JSON.parse(storage["user"]);
+
         $(function() {
+
+            //------省市区-------
             var html = "";
             var province_idx;
             $("#input_city").append(html);
@@ -260,11 +262,271 @@
                 }
                 $("#input_city").append(html);
             });
+
+
+
+            var html = "";
+            var province_idx;
+            $("#input_cityU").append(html);
+
+            $.each(cityMessage, function(idx, item) {
+                if (item.parid == '1') {
+                    html += "<option value='" + item.regname + "' exid='" + item.regid + "'>" + item.regname + "</option>";
+                }
+
+            });
+            $("#input_provinceU").append(html);
+            $("#input_provinceU").change(function(e) {
+                var province = $(this).val();
+                var cityList = [];
+                if (province == "") return;
+                $("#input_cityU option").remove();
+                var html = "<option value=''>--请选择--</option>";
+
+                //					获取已选择的省份的数组下标
+                $.each(cityMessage, function(idx, item) {
+                    if (province == item.regname && item.parid == '1') {
+                        province_idx = idx
+                    }
+                })
+
+                //					获取已选择的省份的城市列表
+                $.each(cityMessage, function(idx, item) {
+                    if (cityMessage[idx].parid == cityMessage[province_idx].regid) {
+                        cityList.push(cityMessage[idx])
+                    }
+                })
+
+                //					添加城市信息给标签
+                if (cityList instanceof Array && cityList.length > 0) {
+                    $.each(cityList, function(idx, item) {
+                        console.log(item)
+                        html += "<option value='" + item.regname + "' exid='" + item.regid + "'>" + item.regname + "</option>";
+
+                    });
+                } else {
+                    html += "<option value='" + cityMessage[province_idx].regname + "' exid='" + cityMessage[province_idx].regid + "'>" + cityMessage[province_idx].regname + "</option>";
+
+                }
+                $("#input_cityU").append(html);
+            });
+            //------省市区-------
+
+
+            //查询所有需要拜访的客户
+           
+
+            $.ajax({
+                type: "GET", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/CustomerController/searchVistClient", // 查询所有任务
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: {
+                    "uId":user.id
+                },
+                success(data) { // 成功调用的回调函数
+
+                    new Vue({
+                        el: "#tby",
+                        data: {
+                            customer: data.data
+                        },
+                        methods: {
+                            //打开更新客户标签并赋值
+                            updateCustomer: function(customer) {
+                                document.getElementById('lightU').style.display = 'block';
+                                $("#customerId").val(customer.id);
+                                $("#nameU").val(customer.name);
+                                $("#sexU").val(customer.sex);
+
+                                var city = customer.city;
+                                province = city.match(/(\S*),/)[1];
+                                town = city.match(/,(\S*)/)[1];
+                                $("#input_provinceU option[value='" + province + "']").attr("selected", true);
+                                changeTown(); //赋值给市的列表
+                                $("#input_cityU option[value='" + town + "']").attr("selected", true);
+
+                                $("#addressU").val(customer.address);
+                                $("#phoneU").val(customer.phone);
+                                $("#emailU").val(customer.email);
+                                $("#industryU").val(customer.industry);
+                                $("#typeU option[value='" + customer.type + "']").attr("selected", true);
+                                $("#birthU").val(customer.birth);
+                                $("#contentU").val(customer.content);
+
+                            },
+                            //流失普通客户
+                            deleteCustomer: function(customerId) {
+                                if (!confirm("确定要更改吗?")) {
+                                    return false;
+                                } else {
+                                    $.ajax({
+                                        type: "GET", // 提交方式
+                                        // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                                        dataType: "json",
+                                        contentType: "application/json;charset=utf-8",
+                                        url: LocalUrl + "/web/CustomerController/deleteByPrimaryKey", // 查询所有任务
+                                        beforeSend: function(request) {
+                                            request.setRequestHeader(Token, user.token);
+                                        },
+                                        data: {
+                                            "id": customerId
+                                        },
+                                        success(data) { // 成功调用的回调函数
+
+                                            if (data.code == "SUCCESS") {
+                                                alert("更改成功")
+                                                window.location.href = 'customer_common.html';
+                                            } else {
+                                                alert(data.message)
+                                            }
+                                        },
+                                        error() { // 调用失败
+                                            alert("ajax出错，未能成功访问路径");
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    });
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
+
+
         });
+
+
+        //新增客戶
+        function increaseCustomer() {
+
+            var customer = {
+                "address": $("#address").val(),
+                "birth": $("#birth").val(),
+                "city": $("#input_province").val() + "," + $("#input_city").val(),
+                "content": $("#content").val(),
+                "email": $("#email").val(),
+                "industry": $("#industry").val(),
+                "name": $("#name").val(),
+                "phone": $("#phone").val(),
+                "sex": $("#sex").val(),
+                "type": $("#type").val(),
+                "cid": user.cid,
+                "uid": user.id
+            }
+
+
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/CustomerController/insertSelective", // 查询所有任务
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(customer),
+                success(data) { // 成功调用的回调函数
+
+                    if (data.code == "SUCCESS") {
+                        alert("新增成功")
+                        window.location.href = 'customer_common.html';
+                    } else {
+                        alert(data.message)
+                    }
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
+        }
+
+        //更新客戶信息
+        function updateCustomer() {
+            var customer = {
+                "address": $("#addressU").val(),
+                "birth": $("#birthU").val(),
+                "city": $("#input_provinceU").val() + "," + $("#input_cityU").val(),
+                "content": $("#contentU").val(),
+                "email": $("#emailU").val(),
+                "industry": $("#industryU").val(),
+                "name": $("#nameU").val(),
+                "phone": $("#phoneU").val(),
+                "sex": $("#sexU").val(),
+                "type": $("#typeU").val(),
+                "id": $("#customerId").val()
+            }
+
+
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/CustomerController/updateByPrimaryKeySelective", // 查询所有任务
+                beforeSend: function(request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(customer),
+                success(data) { // 成功调用的回调函数
+
+                    if (data.code == "SUCCESS") {
+                        alert("更新成功")
+                        window.location.href = 'customer_common.html';
+                    } else {
+                        alert(data.message)
+                    }
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
+        }
     </script>
 
 
+    <script>
+        function changeTown() {
+            var province = $("#input_provinceU").val();
+            var cityList = [];
+            if (province == "") return;
+            $("#input_cityU option").remove();
+            var html = "<option value=''>--请选择--</option>";
 
+            //					获取已选择的省份的数组下标
+            $.each(cityMessage, function(idx, item) {
+                if (province == item.regname && item.parid == '1') {
+                    province_idx = idx
+                }
+            })
+
+            //					获取已选择的省份的城市列表
+            $.each(cityMessage, function(idx, item) {
+                if (cityMessage[idx].parid == cityMessage[province_idx].regid) {
+                    cityList.push(cityMessage[idx])
+                }
+            })
+
+            //					添加城市信息给标签
+            if (cityList instanceof Array && cityList.length > 0) {
+                $.each(cityList, function(idx, item) {
+                    console.log(item)
+                    html += "<option value='" + item.regname + "' exid='" + item.regid + "'>" + item.regname + "</option>";
+
+                });
+            } else {
+                html += "<option value='" + cityMessage[province_idx].regname + "' exid='" + cityMessage[province_idx].regid + "'>" + cityMessage[province_idx].regname + "</option>";
+
+            }
+            $("#input_cityU").append(html);
+        }
+    </script>
 
 </body>
 
