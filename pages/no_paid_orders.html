@@ -225,7 +225,7 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td><input type="submit" class="btn btn-success btn-sm"  onclick="updateOrder()"></button>
+                                <td><input type="submit" class="btn btn-success btn-sm"  onclick="updateOrder()" value="修改"></button>
                                     <button type="button" class="btn btn-success btn-sm" onclick="closeDialogU()">取消</button></td>
                             </tr>
                         </table>
@@ -466,7 +466,7 @@
 
                 if (data.code == "SUCCESS") {
                     alert("添加成功")
-                 //   window.location.href = 'no_paid_orders.html';
+                    window.location.href = 'no_paid_orders.html';
                 } else {
                     alert(data.message)
                 }
