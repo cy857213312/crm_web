@@ -72,11 +72,8 @@
             <div class="menu_section">
                 <h3>管理员功能</h3>
                 <ul class="nav side-menu">
-                    <li><a href="employee_manager.html"><i class="fa fa-bug"></i>员工管理 <span class="fa fa-chevron-down"></span></a>
+                    <li id="employee_section"><a href="employee_manager.html"><i class="fa fa-bug"></i>员工管理 <span class="fa fa-chevron-down"></span></a>
                     </li>
-
-
-
                 </ul>
             </div>
 
@@ -252,4 +249,8 @@
     $("#rightName").text(user.name)
     $("#leftHeadPhoto").html(' <img  src="' + user.photo + '" alt="..." class="img-circle profile_img"> ')
     document.getElementById("rightHeadPhoto").src = user.photo
+
+    if(user.type==3){
+     $("#employee_section").hide();
+    }
 </script>
