@@ -1,43 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-Control" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>极智客户关系管理系统</title>
-    <link href="../css/login.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <title>客户关系管理系统</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-    <div class="login_box">
-        <div class="login_l_img"><img src="../images/login-img.png" /></div>
-        <div class="login">
-            <div class="login_logo">
-                <a href="#"><img src="../images/login_logo.png" /></a>
-            </div>
-            <div class="login_name">
-                <p>极智客户关系管理系统</p>
-            </div>
-
-            <input name="username" type="text" id="username" placeholder="用户名">
-            <input name="password" type="password" id="password" placeholder="密码" />
-            <input value="登录" style="width:100%;" onclick="login()" type="submit">
+    <div class="content">
+        <div class="form sign-in">
+            <h2>客户关系管理系统</h2>
+            <label>
+                <span>账号</span>
+                <input id="username" type="text" />
+            </label>
+            <label>
+                <span>密码</span>
+                <input id="password" type="password" />
+            </label>
+            <p class="forgot-pass"><a href="javascript:">忘记密码？</a></p>
+            <button type="submit" class="submit" onclick="login()">登 录</button>
 
         </div>
-        <div class="copyright"></div>
+        <div class="sub-cont">
+            <div class="img">
+                <div class="img__text m--up">
+                    <h2>还未注册？</h2>
+                    <p>立即注册，发现大量机会！</p>
+                </div>
+                <div class="img__text m--in">
+                    <h2>已有帐号？</h2>
+                    <p>有帐号就登录吧，好久不见了！</p>
+                </div>
+                <div class="img__btn">
+                    <span class="m--up">注 册</span>
+                    <span class="m--in">登 录</span>
+                </div>
+            </div>
+
+            <div class="form sign-up">
+                <h2>员工注册</h2>
+                <pre>
+
+
+                </pre>
+                <table style="margin: auto; width: 600px;  border-spacing: 20px; " cellspacing="5" cellpadding="5">
+                    <tr>
+                        <td>
+                            <span>账户</span>
+                            <input id="account" type="text" />
+                        </td>
+                        <td>
+                            <span>密码</span>
+                            <input id="re_password" type="password" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>真实姓名</span>
+                            <input id="name" type="text" />
+                        </td>
+                        <td>
+                            <span>邮箱</span>
+                            <input id="email" type="email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>电话</span>
+                            <input id="phone" type="text" />
+                        </td>
+                        <td>
+                            <span>公司</span>
+                            <input type="text" id="cid" list="tby" placeholder="">
+                            <datalist id="tby" v-cloak>
+                                <option v-for="i in company" :data-value="i.id">{{i.name}}</option>
+                            </datalist>
+                        </td>
+                    </tr>
+                </table>
+                <button type="button" class="submit" onclick="register()">注 册</button>
+                <button type="button" class="submit" onclick="boss_register()">老板注册</button>
+            </div>
+        </div>
     </div>
+
+    <script src="../js/script.js"></script>
+
     <div style="text-align:center;">
-        <p><a target="_blank">客户关系管理系统</a></p>
     </div>
 </body>
 
 
-<script src="../js/constant.js"></script>
 <!-- jQuery -->
 <script src="../js/jquery.min.js"></script>
 
+
+<script src="../js/move.js"></script>
+
+<script src="../js/cityAndPro.js"></script>
+
+<script src="../js/move.js"></script>
+<script src="../js/constant.js"></script>
+<script src="../js/vue.js"></script>
+
+
+<script>
+    $(function () {
+
+
+
+
+
+        $.ajax({
+
+            type: "POST", // 提交方式
+            // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            url: LocalUrl + "/web/CompanyController/selectAllCompany", // 访问路径
+            success(data) { // 成功调用的回调函数
+
+
+                new Vue({
+                    el: "#tby",
+                    data: {
+                        company: data.data
+                    },
+                    methods: {
+
+
+                    }
+                });
+            },
+            error() { // 调用失败
+                alert("ajax出错，未能成功访问路径");
+            }
+        })
+
+
+    })
+
+
+
+</script>
 <script>
     function login() {
 
@@ -73,6 +180,79 @@
         })
 
     }
+
+
+
+    //创建普通用户
+    function register() {
+
+
+        //
+        $.ajax({
+
+            type: "GET", // 提交方式
+            // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            url: LocalUrl + "/web/CompanyController/selectCompanyByName", // 访问路径
+            data: {
+                "name": $("#cid").val()
+            },
+            success(data) { // 成功调用的回调函数
+
+                var companyid = data.data.id
+
+
+
+                var users = {
+                    "account": $("#account").val(),
+                    "cid": companyid,
+                    "email": $("#email").val(),
+                    "name": $("#name").val(),
+                    "password": $("#re_password").val(),
+                    "phone": $("#phone").val(),
+
+
+                }
+
+                $.ajax({
+
+                    type: "POST", // 提交方式
+                    // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    url: LocalUrl + "/web/UsersController/employeesCreate", // 访问路径
+                    data: JSON.stringify(users),
+                    success(data) { // 成功调用的回调函数
+                        if (data.code == "FAIL") {
+                            alert(data.message)
+                        } else {
+                              alert("创建成功!")
+                              window.location.href = 'index.html';
+                        }
+
+                    },
+                    error() { // 调用失败
+                        alert("ajax出错，未能成功访问路径");
+                    }
+                })
+
+
+            },
+            error() { // 调用失败
+                alert("ajax出错，未能成功访问路径");
+            }
+        })
+
+
+
+
+    }
+
+    function boss_register() {
+        window.location.href = 'index_boss.html';
+    }
 </script>
+
 
 </html>

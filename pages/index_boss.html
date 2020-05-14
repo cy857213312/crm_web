@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <title>客户关系管理系统</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <div class="content">
+        <div class="form sign-in">
+            <h2>老板注册</h2>
+            <pre>
+            </pre>
+            <table style="margin: auto; width: 600px;  border-spacing: 20px; " cellspacing="5" cellpadding="5">
+                <tr>
+                    <td>
+                        <span>账户</span>
+                        <input type="text" />
+                    </td>
+                    <td>
+                        <span>密码</span>
+                        <input type="password" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>真实姓名</span>
+                        <input type="text" />
+                    </td>
+                    <td>
+                        <span>邮箱</span>
+                        <input type="email" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>电话</span>
+                        <input type="text" />
+                    </td>
+                    <td>
+                        <span>公司名称</span>
+                        <input type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>公司地址</span>
+                        <input type="text" />
+                    </td>
+                </tr>
+              
+            </table>
+            <button type="button" class="submit">老板注册</button>
+        </div>
+        <div class="sub-cont">
+            <div class="img">
+                <div class="img__text m--up">
+                    <h2>还未注册公司？</h2>
+                    <p>立即注册公司，邀请员工进入！</p>
+                </div>
+                <div class="img_boss">
+                    <span class="m--up" onclick="login()">立 即 登 录</span>
+                </div>
+
+            </div>
+
+            <div class="form sign-up">
+                <h2>员工注册</h2>
+                <pre>
+
+
+                </pre>
+                <table style="margin: auto; width: 600px;  border-spacing: 20px; " cellspacing="5" cellpadding="5">
+                    <tr>
+                        <td>
+                            <span>账户</span>
+                            <input type="text" />
+                        </td>
+                        <td>
+                            <span>密码</span>
+                            <input type="password" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>真实姓名</span>
+                            <input type="text" />
+                        </td>
+                        <td>
+                            <span>邮箱</span>
+                            <input type="email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>电话</span>
+                            <input type="text" />
+                        </td>
+                        <td>
+                            <span>公司</span>
+                            <input type="text" list="typelist" placeholder="">
+                            <datalist id="typelist">
+                                　　<option>Dimond</option>
+                                　　<option>vertical</option>
+                            </datalist>
+                        </td>
+                    </tr>
+                </table>
+                <button type="button" class="submit">注 册</button>
+                <button type="button" class="submit">老板注册</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+
+    <div style="text-align:center;">
+    </div>
+</body>
+
+
+<!-- jQuery -->
+<script src="../js/jquery.min.js"></script>
+
+
+<script src="../js/constant.js"></script>
+<script>
+    function login() {
+
+        window.location.href = 'index.html';
+
+
+    }
+
+    
+</script>
+
+
+</html>

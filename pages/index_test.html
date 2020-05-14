@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>极智客户关系管理系统</title>
+    <link href="../css/login.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="login_box">
+        <div class="login_l_img"><img src="../images/login-img.png" /></div>
+        <div class="login">
+            <div class="login_logo">
+                <a href="#"><img src="../images/login_logo.png" /></a>
+            </div>
+            <div class="login_name">
+                <p>极智客户关系管理系统</p>
+            </div>
+
+            <input name="username" type="text" id="username" placeholder="用户名">
+            <input name="password" type="password" id="password" placeholder="密码" />
+            <input value="登录" style="width:100%;" onclick="login()" type="submit">
+            <div style=" height: 20px;">
+         
+            <a style="text-align:left; float:left;" onclick="register()">注册新用户</a>
+            <a style="text-align:right; float:right;">忘记密码</a>
+            </div>
+        </div>
+        <div class="copyright"></div>
+    </div>
+    <div style="text-align:center;">
+        <p><a target="_blank">客户关系管理系统</a></p>
+    </div>
+</body>
+
+
+<script src="../js/constant.js"></script>
+<!-- jQuery -->
+<script src="../js/jquery.min.js"></script>
+
+<script>
+    function login() {
+
+        var adminUserDto = {
+            account: $("#username").val(),
+            password: $("#password").val()
+        }
+
+
+        $.ajax({
+
+            type: "POST", // 提交方式
+            // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            url: LocalUrl + "/web/UsersController/userLogin", // 访问路径
+            data: JSON.stringify(adminUserDto),
+            success(data) { // 成功调用的回调函数
+
+
+                if (data.code == "FAIL") {
+                    alert(data.message)
+                } else {
+
+                    user = JSON.stringify(data.data)
+                    sessionStorage.setItem("user", user);
+                    window.location.href = 'home_page.html';
+                }
+            },
+            error() { // 调用失败
+                alert("ajax出错，未能成功访问路径");
+            }
+        })
+
+    }
+
+    function register(){
+        window.location.href = 'test.html';
+    }
+</script>
+
+</html>
