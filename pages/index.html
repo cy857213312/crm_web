@@ -75,7 +75,7 @@
                             <span>公司</span>
                             <input type="text" id="cid" list="tby" placeholder="">
                             <datalist id="tby" v-cloak>
-                                <option v-for="i in company" :data-value="i.id">{{i.name}}</option>
+                                <option v-cloak v-for="i in company" :data-value="i.id">{{i.name}}</option>
                             </datalist>
                         </td>
                     </tr>

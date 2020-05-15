@@ -17,42 +17,42 @@
                 <tr>
                     <td>
                         <span>账户</span>
-                        <input type="text" />
+                        <input id="account" type="text" />
                     </td>
                     <td>
                         <span>密码</span>
-                        <input type="password" />
+                        <input id="password" type="password" />
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span>真实姓名</span>
-                        <input type="text" />
+                        <input id="name" type="text" />
                     </td>
                     <td>
                         <span>邮箱</span>
-                        <input type="email" />
+                        <input id="email" type="email" />
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span>电话</span>
-                        <input type="text" />
+                        <input id="phone" type="text" />
                     </td>
                     <td>
                         <span>公司名称</span>
-                        <input type="text" />
+                        <input id="cname" type="text" />
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span>公司地址</span>
-                        <input type="text" />
+                        <input id="caddress" type="text" />
                     </td>
                 </tr>
-              
+
             </table>
-            <button type="button" class="submit">老板注册</button>
+            <button type="button" class="submit" onclick="boss_register()">老板注册</button>
         </div>
         <div class="sub-cont">
             <div class="img">
@@ -66,51 +66,7 @@
 
             </div>
 
-            <div class="form sign-up">
-                <h2>员工注册</h2>
-                <pre>
-
-
-                </pre>
-                <table style="margin: auto; width: 600px;  border-spacing: 20px; " cellspacing="5" cellpadding="5">
-                    <tr>
-                        <td>
-                            <span>账户</span>
-                            <input type="text" />
-                        </td>
-                        <td>
-                            <span>密码</span>
-                            <input type="password" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>真实姓名</span>
-                            <input type="text" />
-                        </td>
-                        <td>
-                            <span>邮箱</span>
-                            <input type="email" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>电话</span>
-                            <input type="text" />
-                        </td>
-                        <td>
-                            <span>公司</span>
-                            <input type="text" list="typelist" placeholder="">
-                            <datalist id="typelist">
-                                　　<option>Dimond</option>
-                                　　<option>vertical</option>
-                            </datalist>
-                        </td>
-                    </tr>
-                </table>
-                <button type="button" class="submit">注 册</button>
-                <button type="button" class="submit">老板注册</button>
-            </div>
+           
         </div>
     </div>
 
@@ -125,16 +81,61 @@
 <script src="../js/jquery.min.js"></script>
 
 
+<script src="../js/move.js"></script>
+
+<script src="../js/cityAndPro.js"></script>
+
+<script src="../js/move.js"></script>
 <script src="../js/constant.js"></script>
+<script src="../js/vue.js"></script>
+
+
 <script>
-    function login() {
+    function boss_register() {
 
-        window.location.href = 'index.html';
+        console.log("11")
 
+        var bossCreateDto = {
+
+            "account": $("#account").val(),
+            "caddress": $("#caddress").val(),
+            "cname": $("#cname").val(),
+            "email": $("#email").val(),
+            "name": $("#name").val(),
+            "password": $("#password").val(),
+            "phone": $("#phone").val()
+
+        }
+
+        $.ajax({
+
+            type: "POST", // 提交方式
+            // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            url: LocalUrl + "/web/UsersController/bossCreate", // 访问路径
+            data: JSON.stringify(bossCreateDto),
+            success(data) { // 成功调用的回调函数
+                if (data.code == "FAIL") {
+                    alert(data.message)
+                } else {
+                    alert("创建成功!")
+                    windwindow.location.href = 'index.html';
+                }
+
+            },
+            error() { // 调用失败
+                alert("ajax出错，未能成功访问路径");
+            }
+        })
 
     }
 
-    
+    function login(){
+        window.location.href = 'index.html';
+    }
+
+
 </script>
 
 

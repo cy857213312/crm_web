@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>html5上传后立即显示</title>
+
+
+
+</head>
+
+<body>
+
+    <div class="am-form-group am-form-file">
+        <div class="tpl-form-file-img">
+            <img id="backimg" src="/static/admin/assets/img/code.png" class="am-img-responsive" alt="">
+        </div>
+        <input id="doc-form-file" type="file" multiple="" onchange="reads(this)">
+    </div>
+
+
+
+
+
+</body>
+
+<!-- jQuery -->
+<script src="../js/jquery.min.js"></script>
+
+
+<script src="../js/move.js"></script>
+
+<script src="../js/cityAndPro.js"></script>
+
+<script src="../js/move.js"></script>
+<script src="../js/constant.js"></script>
+<script src="../js/vue.js"></script>
+
+<script>
+
+    function reads(obj) {
+        var file = obj.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (ev) {
+            $("#backimg").attr("src", ev.target.result);
+        }
+    }
+
+
+</script>
+
+
+</html>

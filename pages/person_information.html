@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../images/favicon.ico" type="image/ico" />
+
+    <title>极智客户关系管理系统</title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../css/green.css" rel="stylesheet">
+
+    <!-- bootstrap-progressbar -->
+    <link href="../css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="../css/jqvmap.min.css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="../css/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../css/custom.min.css" rel="stylesheet">
+
+    <style>
+        #table_person td {
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div id="header" class="include"></div>
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+
+                <table style="margin: auto; width: 600px;  border-spacing: 10px; margin-top: 100px; font-size: 20px;"
+                    cellspacing="5" cellpadding="10">
+                    <tr>
+                        <td style="width: 100px;">
+                            <span>账户</span>
+                        </td>
+                        <td>
+                            <input class="form-control" id="account" type="text" readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>密码</span>
+                        </td>
+                        <td>
+                            <input class="form-control" id="re_password" type="password" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>真实姓名</span>
+                        </td>
+                        <td>
+                            <input class="form-control" id="name" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>邮箱</span>
+                        </td>
+                        <td>
+                            <input class="form-control" id="email" type="email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>电话</span>
+                        </td>
+                        <td>
+                            <input class="form-control" id="phone" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>公司</span>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" id="cname" list="tby" placeholder="" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>状态</span>
+                        </td>
+                        <td>
+                            <select id="statu" style="width: 220px;" class="form-control">
+                                <option value="0" selected>工作 </option>
+                                <option value="1">外派</option>
+                                <option value="2">请假</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>头像</span>
+                        </td>
+                        <td>
+                            <img id="photo" style="width: 200px;height: 200px;" src="">
+                            <input type="file" name="file" id="file" class="inputfile" onchange="reads(this)" />
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <input type="button" id="change" value="修改" onclick="change_person()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /page content -->
+
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../js/jquery.min.js"></script>
+
+
+    <script src="../js/move.js"></script>
+    <script src="../js/cityAndPro.js"></script>
+    <script src="../js/constant.js"></script>
+    <script src="../js/vue.js"></script>
+
+
+    <script>
+        $("#header").load("header.html");
+
+
+
+    </script>
+
+
+    <script>
+
+
+        //上传新照片返回地址
+        function reads(obj) {
+            var file = obj.files[0];
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (ev) {
+                $("#photo").attr("src", ev.target.result);
+            }
+
+
+            var formData = new FormData();
+            // 服务端要求参数是 pic1 
+
+            formData.append('file', file);
+
+            $.ajax({
+                url: LocalUrl + "/FileController/fileUpload", // 访问路径
+                type: 'post',
+                data: formData,
+                cache: false, //上传文件不需要缓存
+                processData: false, // 告诉jQuery不要去处理发送的数据
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                success: function (data) {
+                    sessionStorage.setItem("newPhoto", data);
+                }
+            })
+
+        }
+
+
+        //更改信息
+        function change_person() {
+         
+            var newPhoto = storage["newPhoto"];
+            
+
+            var users = {
+
+                "id": user.id,
+                "name": $("#name").val(),
+                "password": $("#re_password").val(),
+                "phone": $("#phone").val(),
+                "photo":  newPhoto,
+                "statue": $("#statu").val(),
+                "email":$("#email").val()
+            }
+
+            $.ajax({
+
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/UsersController/updateUser", // 访问路径
+                beforeSend: function (request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(users),
+                success(data) { // 成功调用的回调函数
+
+
+                    if (data.code == "FAIL") {
+                        alert(data.message)
+                    } else {
+                        alert("个人信息更新成功")
+                        window.location.href = 'index.html';
+                    }
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
+        }
+    </script>
+
+    <script>
+
+        //获取当前用户信息
+        var storage = window.sessionStorage;
+        user = JSON.parse(storage["user"]);
+
+       
+
+
+        $.ajax({
+
+            type: "GET", // 提交方式
+            // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            url: LocalUrl + "/web/CompanyController/selectCompanyById", // 访问路径
+            beforeSend: function (request) {
+                request.setRequestHeader(Token, user.token);
+            },
+            data: {
+                "id": user.cid
+            },
+            success(data) { // 成功调用的回调函数
+
+
+                if (data.code == "FAIL") {
+                    alert(data.message)
+                } else {
+                    $("#cname").val(data.data.name);
+                }
+            },
+            error() { // 调用失败
+                alert("ajax出错，未能成功访问路径");
+            }
+        })
+
+
+        $("#account").val(user.account);
+        $("#re_password").val(user.password);
+        $("#name").val(user.name);
+        $("#email").val(user.email);
+        $("#phone").val(user.phone);
+        $("#statu option[value='" + user.statue + "']").attr("selected", true);
+        $("#photo").attr("src", user.photo);
+        console.log(user.photo)
+        sessionStorage.setItem("newPhoto", user.photo);
+    </script>
+</body>
+
+</html>
