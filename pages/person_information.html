@@ -195,20 +195,36 @@
 
         //更改信息
         function change_person() {
-         
+
             var newPhoto = storage["newPhoto"];
-            
 
-            var users = {
+            if ($("#re_password").val() == user.password) {
+                var users = {
 
-                "id": user.id,
-                "name": $("#name").val(),
-                "password": $("#re_password").val(),
-                "phone": $("#phone").val(),
-                "photo":  newPhoto,
-                "statue": $("#statu").val(),
-                "email":$("#email").val()
+                    "id": user.id,
+                    "name": $("#name").val(),
+                    "phone": $("#phone").val(),
+                    "photo": newPhoto,
+                    "statue": $("#statu").val(),
+                    "email": $("#email").val()
+                }
+
+            } else {
+
+                var users = {
+
+                    "id": user.id,
+                    "name": $("#name").val(),
+                    "password": $("#re_password").val(),
+                    "phone": $("#phone").val(),
+                    "photo": newPhoto,
+                    "statue": $("#statu").val(),
+                    "email": $("#email").val()
+                }
+
             }
+
+
 
             $.ajax({
 
@@ -244,7 +260,7 @@
         var storage = window.sessionStorage;
         user = JSON.parse(storage["user"]);
 
-       
+
 
 
         $.ajax({
