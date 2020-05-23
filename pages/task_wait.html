@@ -51,9 +51,11 @@
                             <div class="col-sm-12">
                                 <div class="card-box table-responsive">
                                     <p class="text-muted font-13 m-b-30">
-                                        <button onclick="openDialog()" type="button" id="open" class="btn btn-success">新增任务</button>
+                                        <button onclick="openDialog()" type="button" id="open"
+                                            class="btn btn-success">新增任务</button>
                                     </p>
-                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%;text-align: center;">
+                                    <table id="datatable" class="table table-striped table-bordered"
+                                        style="width:100%;text-align: center;">
                                         <thead>
                                             <tr>
                                                 <th style="width:70px">ID</th>
@@ -79,9 +81,12 @@
                                                 <td v-if="i.priority==0 ">低</td>
                                                 <td v-else-if="i.priority==1 ">中</td>
                                                 <td v-else-if="i.priority==2 ">高</td>
-                                                <td><button type="button" v-on:click="completeTask(i.id)" class="btn btn-primary">完成</button>
-                                                    <button type="button" v-on:click="openDialogU(i)" class="btn btn-warning">修改</button>
-                                                    <button type="button" v-on:click="deleteTask(i.id)" class="btn btn-danger">删除</button>
+                                                <td><button type="button" v-on:click="completeTask(i.id)"
+                                                        class="btn btn-primary">完成</button>
+                                                    <button type="button" v-on:click="openDialogU(i)"
+                                                        class="btn btn-warning">修改</button>
+                                                    <button type="button" v-on:click="deleteTask(i.id)"
+                                                        class="btn btn-danger">删除</button>
                                                 </td>
                                             </tr>
 
@@ -105,7 +110,8 @@
             <!--新增框弹出-->
             <div id="light" class="white_content">
                 <h5 style="color:black;">新建任务</h5>
-                <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialog()" src="../images/chacha.jpg">
+                <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialog()"
+                    src="../images/chacha.jpg">
                 <hr />
                 <table class="move_table">
                     <tr>
@@ -126,7 +132,7 @@
                     </tr>
                     <tr>
                         <td>优先级</td>
-                        <td><select id="priority" style="width: 50px;">
+                        <td><select id="priority" style="width: 150px;">
                                 <option value="0" selected>低</option>
                                 <option value="1">中</option>
                                 <option value="2">高</option>
@@ -134,19 +140,22 @@
                     </tr>
                     <tr id="appoint">
                         <td>指派</td>
-                        <td><select id="appointPeople" style="width: 50px;">
-                            <option value="" selected></option>
+                        <td><select id="appointPeople" style="width: 150px;">
+                                <option  value="-1" selected>自己</option>
+                                <option  v-for="e in employee"  v-bind:value="e.id">{{e.name}}</option>
                             </select></td>
                     </tr>
                 </table>
-                <div class="bottom_btn"> <button type="button" class="btn btn-success btn-sm" onclick="increaseTask()">确定</button>
+                <div class="bottom_btn"> <button type="button" class="btn btn-success btn-sm"
+                        onclick="increaseTask()">确定</button>
                     <button type="button" class="btn btn-success btn-sm" onclick="closeDialog()">取消</button></div>
             </div>
 
             <!--更新框弹出-->
             <div id="lightU" class="white_content">
                 <h5 style="color:black;">更新任务</h5>
-                <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialogU()" src="../images/chacha.jpg">
+                <img style="width: 30px;height: 30px;position: absolute;right: 10px;top: 10px;" onclick="closeDialogU()"
+                    src="../images/chacha.jpg">
                 <hr />
                 <table class="move_table">
 
@@ -178,7 +187,8 @@
                     </tr>
 
                 </table>
-                <div class="bottom_btn"> <button type="button" class="btn btn-success btn-sm" onclick="updateTask()">确定</button>
+                <div class="bottom_btn"> <button type="button" class="btn btn-success btn-sm"
+                        onclick="updateTask()">确定</button>
                     <button type="button" class="btn btn-success btn-sm" onclick="closeDialogU()">取消</button></div>
             </div>
 
@@ -202,7 +212,7 @@
 
 
     <script>
-        $(function() {
+        $(function () {
 
             //判断是否有资格进行指派
             var storage = window.sessionStorage;
@@ -211,6 +221,7 @@
 
                 document.getElementById("appoint").style.display = 'none'
             }
+
 
 
             //查询当前用户所有任务
@@ -226,7 +237,7 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 url: LocalUrl + "/web/TaskController/searchAllTask", // 查询所有任务
-                beforeSend: function(request) {
+                beforeSend: function (request) {
                     request.setRequestHeader(Token, user.token);
                 },
                 data: JSON.stringify(taskDto),
@@ -239,7 +250,7 @@
                         },
                         methods: {
                             //打开更新任务框
-                            openDialogU: function(task) {
+                            openDialogU: function (task) {
                                 document.getElementById('lightU').style.display = 'block';
                                 $("#taskId").val(task.id);
                                 $("#titleU").val(task.title);
@@ -249,7 +260,7 @@
                                 $("#priorityU option[value='" + task.priority + "']").attr("selected", true);
                             },
                             //删除选定任务
-                            deleteTask: function(taskId) {
+                            deleteTask: function (taskId) {
 
                                 $.ajax({
                                     type: "GET", // 提交方式
@@ -257,7 +268,7 @@
                                     dataType: "json",
                                     contentType: "application/json;charset=utf-8",
                                     url: LocalUrl + "/web/TaskController/deleteByPrimaryKey", // 访问路径
-                                    beforeSend: function(request) {
+                                    beforeSend: function (request) {
                                         request.setRequestHeader(Token, user.token);
                                     },
                                     data: {
@@ -277,7 +288,7 @@
                                 })
                             },
                             //完成当前任务
-                            completeTask: function(taskId) {
+                            completeTask: function (taskId) {
 
                                 $.ajax({
                                     type: "GET", // 提交方式
@@ -285,7 +296,7 @@
                                     dataType: "json",
                                     contentType: "application/json;charset=utf-8",
                                     url: LocalUrl + "/web/TaskController/completeTask", // 访问路径
-                                    beforeSend: function(request) {
+                                    beforeSend: function (request) {
                                         request.setRequestHeader(Token, user.token);
                                     },
                                     data: {
@@ -312,17 +323,22 @@
                 }
             })
 
+            //查询员工
+            searchUser();
+          
+
         })
 
         //新增任务
         function increaseTask() {
 
+            
+
             var storage = window.sessionStorage;
             user = JSON.parse(storage["user"]);
 
 
-
-            if ($("#appoint").val() == "") {
+            if ($("#appointPeople").val() == "-1") {
                 var taskDto = {
                     "beginTime": $("#beginTime").val(),
                     "content": $("#content").val(),
@@ -344,7 +360,7 @@
                     "priority": $("#priority").val(),
                     "title": $("#title").val(),
                     "type": 0,
-                    "uid": $("#appoint").val()
+                    "uid":$("#appointPeople").val()
                 }
             }
             $.ajax({
@@ -353,7 +369,7 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 url: LocalUrl + "/web/TaskController/addNewTask", // 访问路径
-                beforeSend: function(request) {
+                beforeSend: function (request) {
                     request.setRequestHeader(Token, user.token);
                 },
                 data: JSON.stringify(taskDto),
@@ -395,7 +411,7 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 url: LocalUrl + "/web/TaskController/updateByPrimaryKeySelective", // 访问路径
-                beforeSend: function(request) {
+                beforeSend: function (request) {
                     request.setRequestHeader(Token, user.token);
                 },
                 data: JSON.stringify(task),
@@ -412,6 +428,48 @@
                 }
             })
 
+        }
+
+
+        //查询员工
+        function searchUser() {
+
+            console.log("查询")
+
+            var searchUserDto = {
+                "cid": user.cid,
+                "pageNum": 1,
+                "type": user.type
+            }
+
+            $.ajax({
+                type: "POST", // 提交方式
+                // 返回数据类型，*注意如果返回值为String类型则需要去掉此条
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: LocalUrl + "/web/UsersController/searchUser",
+                beforeSend: function (request) {
+                    request.setRequestHeader(Token, user.token);
+                },
+                data: JSON.stringify(searchUserDto),
+                success(data) { // 成功调用的回调函数
+
+                    new Vue({
+                        el: "#appointPeople",
+                        data: {
+                            employee: data.data.list
+                        },
+                        methods: {
+
+
+                        }
+                    });
+
+                },
+                error() { // 调用失败
+                    alert("ajax出错，未能成功访问路径");
+                }
+            })
         }
     </script>
 

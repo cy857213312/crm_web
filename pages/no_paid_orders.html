@@ -158,8 +158,8 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td><input type="submit" class="btn btn-success btn-sm"  onclick="increaseOrder()"></button>
-                                    <button type="button" class="btn btn-success btn-sm" onclick="closeDialog()">取消</button></td>
+                                <td><input type="button" class="btn btn-success btn-sm"  onclick="increaseOrder()" value="添加"></input>
+                                    <input type="button" class="btn btn-success btn-sm" onclick="closeDialog()" value="取消"></input></td>
                             </tr>
                         </table>
                     </form>
@@ -437,7 +437,7 @@
     //新增订单
     function increaseOrder() {
 
-
+    console.log("haha ")
 
         var orders = {
             "cid": user.cid,
@@ -466,7 +466,7 @@
 
                 if (data.code == "SUCCESS") {
                     alert("添加成功")
-                    window.location.href = 'no_paid_orders.html';
+                   window.location.href = 'no_paid_orders.html';
                 } else {
                     alert(data.message)
                 }
